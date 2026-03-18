@@ -684,7 +684,7 @@ export default function App() {
 
           <div style={{ borderTop:"1px solid rgba(255,255,255,0.06)", paddingTop:22, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
             <div style={{ fontSize:11, color:"rgba(255,255,255,0.25)", letterSpacing:"0.08em" }}>© 2025 SKBS Hi-Power Borewells. All rights reserved.</div>
-            <div style={{ fontSize:10, color:"rgba(255,255,255,0.18)", letterSpacing:"0.18em", textTransform:"uppercase", fontStyle:"italic" }}>Crafted by Gobi Krishnan · Theni Offers</div>
+            <div style={{ fontSize:10, color:"rgba(255,255,255,0.18)", letterSpacing:"0.18em", textTransform:"uppercase", fontStyle:"italic" }}>Crafted by Navi Promotions · Theni</div>
           </div>
         </div>
       </footer>
