@@ -1,284 +1,722 @@
-import React, { useState, useEffect } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination } from 'swiper/modules';
-import { 
-  Phone, Droplets, MapPin, Drill, ArrowRight, ShieldCheck, 
-  Award, CheckCircle2, Waves, Zap, Construction, Menu, X, ExternalLink, User, Wrench 
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Phone, Droplets, MapPin, Drill, Award, CheckCircle2, Waves, Zap,
+  Construction, Menu, X, Star, MessageCircle, Clock, Users, ShieldCheck,
+  Wrench, Target, ArrowRight, ChevronRight, Play, CheckCheck
+} from "lucide-react";
 
-import 'swiper/css';
-import 'swiper/css/pagination';
-
-const HERO_SLIDES = [
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+const SLIDES = [
   {
-    image: 'https://aruviborewells.com/images/flash1.jpg',
-    subtitle: "Cumbum's No.1 Specialist",
-    title: 'WE DRILL <br /> <span class="text-[#D4AF37]">DEEPER.</span>',
-    description: 'Advanced 5" & 6.5" High-Pressure drilling for Agriculture & Industries.',
-    cta: 'Book Site Survey'
+    img: "https://radhakrishnaborewells.com/wp-content/uploads/2024/10/1-14.webp",
+    tag: "Cumbum's No.1 Specialist",
+    h1: "WE DRILL", h2: "DEEPER.",
+    desc: 'Advanced 5" & 6.5" high-pressure drilling for agriculture & industries.',
+    cta: "Book Free Survey",
   },
   {
-    image: 'https://livpure.com/cdn/shop/articles/The-Hidden-Dangers-in-Your-Tap-Water-How-a-Water-Purifier-Can-Help-406023.png?v=1726726421',
-    subtitle: 'Sustainable Water',
-    title: 'TAP INTO <br /> <span class="text-[#D4AF37]">PURE WATER.</span>',
-    description: 'Precision engineering to tap into the deepest water veins safely.',
-    cta: 'Explore Services'
+    img: "https://5.imimg.com/data5/ANDROID/Default/2022/6/IP/VS/OL/94950679/product-jpeg-500x500.jpg",
+    tag: "Side-Bore Technology",
+    h1: "WELL", h2: "REBORN.",
+    desc: "Rejuvenate your dry open wells with horizontal side-bore precision tech.",
+    cta: "Explore Services",
   },
   {
-    image: 'https://i.ytimg.com/vi/FjnXmWqU95M/sddefault.jpg?v=6234d522',
-    subtitle: 'Side-Bore Tech',
-    title: 'WELL <br /> <span class="text-[#D4AF37]">REBIRTH.</span>',
-    description: 'Rejuvenate your dry wells with our horizontal side-bore technology.',
-    cta: 'View Gallery'
+    img: "https://vikalpsangam.org/wp-content/uploads/migrate/Food%20and%20water/manu_moudgil_irappa_saugli_recharged_borewell.jpg",
+    tag: "Smart Water Survey",
+    h1: "SMART", h2: "SURVEYING.",
+    desc: "Scientific water-point identification for a 100% drilling success rate.",
+    cta: "View Our Works",
   },
   {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb0ezl1Eg5rYtWOblL6eq729v33omQ0dpSJQ&s',
-    subtitle: 'Smart Survey',
-    title: 'SMART <br /> <span class="text-[#D4AF37]">SURVEYING.</span>',
-    description: 'Scientific water point identification ensuring 100% success rate.',
-    cta: 'Book Survey'
+    img: "https://images.unsplash.com/photo-1521207418485-99c705420785?q=80",
+    tag: "24/7 Emergency Support",
+    h1: "ALWAYS", h2: "THERE.",
+    desc: "Round-the-clock pump maintenance, emergency response, and support.",
+    cta: "Call Expert Now",
   },
-  {
-    image: 'https://radhakrishnaborewells.com/wp-content/uploads/2024/10/1-14.webp',
-    subtitle: '24/7 Support',
-    title: 'ALWAYS <br /> <span class="text-[#D4AF37]">AVAILABLE.</span>',
-    description: 'Quick response for borewell cleaning and motor maintenance.',
-    cta: 'Call Expert'
-  }
 ];
 
-const WORKS_GALLERY = [
-  { img: 'https://vikalpsangam.org/wp-content/uploads/migrate/Food%20and%20water/manu_moudgil_irappa_saugli_recharged_borewell.jpg', title: 'Farm Project' },
-  { img: 'https://i.ytimg.com/vi/spN1mvOzZrE/maxresdefault.jpg', title: 'Side-Bore' },
-  { img: 'https://5.imimg.com/data5/QT/NC/MY-6509950/pile-boring-machine-500x500.jpg', title: 'Ind. Rig' },
-  { img: 'https://4.imimg.com/data4/GQ/PP/MY-6263606/bore-well-drilling-500x500.jpg', title: 'Deep Bore' },
-  { img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlIkp1lP6RSlGKCWEnIrvJAZ2e2jiyf0Fu1w&s', title: 'Site Check' },
-  { img: 'https://images.unsplash.com/photo-1521207418485-99c705420785?q=80', title: 'Flushing' },
+const SERVICES = [
+  { icon: Construction, title: '6.5" Industrial Boring', tag: "Most Popular", img: "https://5.imimg.com/data5/ANDROID/Default/2022/6/IP/VS/OL/94950679/product-jpeg-500x500.jpg", desc: "Heavy-duty industrial rigs reaching depths up to 1500 ft with precision hydraulic systems for maximum water yield." },
+  { icon: Droplets, title: '5" Agricultural Boring', tag: "Agri Specialist", img: "https://4.imimg.com/data4/GQ/PP/MY-6263606/bore-well-drilling-500x500.jpg", desc: "Perfectly calibrated for farmland irrigation — cost-effective, deep-reach drilling with fast turnaround for farmers." },
+  { icon: Waves, title: "Side-Bore Revival", tag: "Unique Tech", img: "https://i.ytimg.com/vi/spN1mvOzZrE/maxresdefault.jpg", desc: "Breathe new life into dry open wells. Horizontal drilling reaches hidden water veins no one else can find." },
+  { icon: Target, title: "Water Point Survey", tag: "Pre-Drill", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb0ezl1Eg5rYtWOblL6eq729v33omQ0dpSJQ&s", desc: "Scientific geo-survey & soil analysis to identify the perfect drilling point — before a single meter is drilled." },
+  { icon: Wrench, title: "Borewell Flushing", tag: "Maintenance", img: "https://images.unsplash.com/photo-1521207418485-99c705420785?q=80", desc: "High-pressure water jetting to clean clogged borewells, restore flow rates, and extend operational life." },
+  { icon: Zap, title: "Pump & Motor Service", tag: "24/7 Support", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlIkp1lP6RSlGKCWEnIrvJAZ2e2jiyf0Fu1w&s", desc: "Complete submersible pump installation, repair, and replacement with genuine parts and emergency support." },
 ];
 
-const App = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSlide, setActiveSlide] = useState(0);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const WHY_US = [
+  { icon: Award, title: "15+ Years Experience", desc: "Trusted by 2500+ families and businesses across Theni district since 2009." },
+  { icon: ShieldCheck, title: "100% Success Rate", desc: "Scientific surveying ensures we never drill dry. Water, guaranteed." },
+  { icon: Clock, title: "24/7 Emergency", desc: "Round-the-clock support for pump failures and water emergencies." },
+  { icon: MapPin, title: "Local Experts", desc: "Deep knowledge of Cumbum valley geology and underground water tables." },
+  { icon: Users, title: "Skilled Team", desc: "Certified drilling operators with years of intense field training." },
+  { icon: Zap, title: "Latest Equipment", desc: "Hi-pressure hydraulic rigs and precision boring technology." },
+];
+
+const PROCESS = [
+  { n: "01", title: "Site Survey", desc: "Our experts visit your site, study the geology, and map underground water veins using scientific methods." },
+  { n: "02", title: "Point Identification", desc: "We pinpoint the optimal drilling location for maximum yield before any equipment arrives." },
+  { n: "03", title: "Precision Drilling", desc: "Our hi-power rigs drill with precision to the identified depth, ensuring clean, uncontaminated water." },
+  { n: "04", title: "Water Testing", desc: "Post-drill water quality testing and flow measurement before handing over to you." },
+];
+
+const TESTIMONIALS = [
+  { name: "Raju", loc: "Uthamapalayam", stars: 5, text: "SKBS found water at 400ft where two other companies failed. My farm is now thriving because of them!" },
+  { name: "Meenakshi Industries", loc: "Cumbum", stars: 5, text: "Professional, fast, excellent water yield. Best industrial boring service in Theni district." },
+  { name: "Selvam", loc: "Kumuli", stars: 5, text: "Three borewells before this. SKBS used their survey method and hit water on the very first try at 600ft." },
+  { name: "Annamalai", loc: "Theni", stars: 5, text: "Side-bore technology revived my 20-year-old dry open well. Water flowing again after 5 years!" },
+];
+
+const GALLERY = [
+  { img: "https://vikalpsangam.org/wp-content/uploads/migrate/Food%20and%20water/manu_moudgil_irappa_saugli_recharged_borewell.jpg", label: "Farm Project" },
+  { img: "https://i.ytimg.com/vi/spN1mvOzZrE/maxresdefault.jpg", label: "Side-Bore" },
+  { img: "https://5.imimg.com/data5/ANDROID/Default/2022/6/IP/VS/OL/94950679/product-jpeg-500x500.jpg", label: "Industrial Rig" },
+  { img: "https://4.imimg.com/data4/GQ/PP/MY-6263606/bore-well-drilling-500x500.jpg", label: "Deep Bore" },
+  { img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlIkp1lP6RSlGKCWEnIrvJAZ2e2jiyf0Fu1w&s", label: "Site Survey" },
+  { img: "https://images.unsplash.com/photo-1521207418485-99c705420785?q=80", label: "Flushing" },
+];
+
+// ─────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────
+const gold = "linear-gradient(135deg,#D4AF37,#F7E06A,#C49A1A)";
+const dark = "#060A14";
+const mid  = "#0B1121";
+const glass = { background:"rgba(255,255,255,0.06)", backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.09)" };
+const glassStrong = { background:"rgba(255,255,255,0.10)", backdropFilter:"blur(28px)", WebkitBackdropFilter:"blur(28px)", border:"1px solid rgba(212,175,55,0.18)" };
+
+function Counter({ to, suffix = "" }) {
+  const [val, setVal] = useState(0);
+  const ref = useRef(null);
+  const done = useRef(false);
+  useEffect(() => {
+    if (!ref.current) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !done.current) {
+        done.current = true;
+        const n = parseInt(to);
+        let cur = 0;
+        const inc = Math.max(1, Math.ceil(n / 90));
+        const t = setInterval(() => {
+          cur = Math.min(cur + inc, n);
+          setVal(cur);
+          if (cur >= n) clearInterval(t);
+        }, 18);
+      }
+    }, { threshold: 0.4 });
+    obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [to]);
+  return <span ref={ref}>{val}{suffix}</span>;
+}
+
+function StarRow({ n }) {
+  return (
+    <span style={{ display:"flex", gap:3 }}>
+      {Array(n).fill(0).map((_, i) => <Star key={i} size={12} fill="#D4AF37" color="#D4AF37" />)}
+    </span>
+  );
+}
+
+const FadeUp = ({ children, delay = 0, style = {} }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 32 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-60px" }}
+    transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1], delay }}
+    style={style}
+  >{children}</motion.div>
+);
+
+// ─────────────────────────────────────────────
+// MAIN APP
+// ─────────────────────────────────────────────
+export default function App() {
+  const [slide, setSlide] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Google Fonts
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap";
+    document.head.appendChild(link);
+    return () => document.head.removeChild(link);
   }, []);
 
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const t = setInterval(() => setSlide(s => (s + 1) % SLIDES.length), 5500);
+    return () => clearInterval(t);
+  }, []);
+
+  const S = {
+    page: { fontFamily:"'Outfit',sans-serif", background: dark, color:"#fff", overflowX:"hidden", minHeight:"100vh" },
+    section: (bg = dark) => ({ padding: isMobile ? "70px 20px" : "100px 40px", background: bg }),
+    inner: { maxWidth: 1280, margin:"0 auto" },
+    tag: { fontSize:11, letterSpacing:"0.35em", textTransform:"uppercase", fontWeight:700, color:"#D4AF37", marginBottom:12 },
+    heading: (size) => ({ fontFamily:"'Bebas Neue',sans-serif", fontSize: isMobile ? size * 0.65 : size, lineHeight:0.95, color:"#fff" }),
+    goldText: {
+      background: gold, backgroundClip:"text", WebkitBackgroundClip:"text",
+      WebkitTextFillColor:"transparent", color:"transparent",
+    },
+    btn: (variant = "gold") => variant === "gold" ? {
+      background: gold, color:"#060A14", padding:"14px 30px", borderRadius:50, fontWeight:800,
+      fontSize:13, letterSpacing:"0.1em", textTransform:"uppercase", textDecoration:"none",
+      display:"inline-flex", alignItems:"center", gap:8,
+      boxShadow:"0 8px 30px rgba(212,175,55,0.35)",
+    } : {
+      ...glass, color:"#fff", padding:"14px 28px", borderRadius:50,
+      fontWeight:700, fontSize:13, letterSpacing:"0.1em", textTransform:"uppercase",
+      textDecoration:"none", display:"inline-flex", alignItems:"center", gap:8,
+    },
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans overflow-x-hidden">
-      
-      {/* --- NAVBAR --- */}
-      <nav className={`fixed w-full z-[100] transition-all duration-500 px-5 py-4 ${
-        isScrolled || isMenuOpen ? 'bg-[#0F172A] shadow-2xl py-3' : 'bg-transparent'
-      }`}>
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <div className="bg-[#D4AF37] p-2 rounded-lg">
-              <Drill className="text-[#0F172A]" size={20} />
+    <div style={S.page}>
+
+      {/* ── CSS ─────────────────────────────── */}
+      <style>{`
+        *{box-sizing:border-box;margin:0;padding:0;}
+        html{scroll-behavior:smooth;}
+        ::-webkit-scrollbar{width:3px;}
+        ::-webkit-scrollbar-track{background:#060A14;}
+        ::-webkit-scrollbar-thumb{background:#D4AF37;border-radius:3px;}
+        @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+        @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+        @keyframes pulseGold{0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,0.5)}70%{box-shadow:0 0 0 14px rgba(212,175,55,0)}}
+        @keyframes shimmer{0%{background-position:-400% 0}100%{background-position:400% 0}}
+        @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+        .gold-shimmer{
+          background:linear-gradient(90deg,#D4AF37 0%,#F7E06A 30%,#C49A1A 60%,#D4AF37 100%);
+          background-size:400% 100%;
+          -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+          background-clip:text;animation:shimmer 4s linear infinite;
+        }
+        .nav-a{color:rgba(255,255,255,0.65);text-decoration:none;font-weight:600;font-size:12px;
+          letter-spacing:0.15em;text-transform:uppercase;transition:color 0.2s;position:relative;padding-bottom:2px;}
+        .nav-a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:#D4AF37;transition:width 0.3s;}
+        .nav-a:hover{color:#D4AF37;}.nav-a:hover::after{width:100%;}
+        .svc-card img{transition:transform 0.7s ease;}
+        .svc-card:hover img{transform:scale(1.07);}
+        .gal-item img{transition:transform 0.6s ease;}
+        .gal-item:hover img{transform:scale(1.06);}
+        .proc-step:not(:last-child)::after{content:'';position:absolute;left:27px;top:60px;width:2px;height:calc(100% - 20px);background:linear-gradient(to bottom,rgba(212,175,55,0.5),rgba(212,175,55,0.0));pointer-events:none;}
+        .testi-card{transition:border-color 0.3s;}
+        .testi-card:hover{border-color:rgba(212,175,55,0.35)!important;}
+        .why-card{transition:background 0.3s,border-color 0.3s,transform 0.3s;}
+        .why-card:hover{background:rgba(212,175,55,0.07)!important;border-color:rgba(212,175,55,0.25)!important;transform:translateY(-4px);}
+      `}</style>
+
+      {/* ── NAVBAR ──────────────────────────── */}
+      <nav style={{
+        position:"fixed", top:0, left:0, right:0, zIndex:1000,
+        padding: scrolled ? "12px 24px" : (isMobile ? "16px 20px" : "22px 40px"),
+        transition:"all 0.4s ease",
+        ...(scrolled || menu ? { background:"rgba(6,10,20,0.95)", backdropFilter:"blur(24px)", WebkitBackdropFilter:"blur(24px)", borderBottom:"1px solid rgba(255,255,255,0.07)" } : {})
+      }}>
+        <div style={{ maxWidth:1280, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+          {/* Logo */}
+          <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+            <div style={{ width:44, height:44, background:gold, borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", animation:"pulseGold 2.5s infinite", flexShrink:0 }}>
+              <Drill size={20} color="#060A14" strokeWidth={2.5} />
             </div>
-            <div className="flex flex-col text-white text-left">
-              <span className="text-xl font-black tracking-tighter uppercase leading-none font-sans">SKBS</span>
-              <span className="text-[8px] text-[#D4AF37] font-bold tracking-[0.2em] uppercase font-mono leading-none">Hi-Power</span>
+            <div>
+              <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:26, letterSpacing:"0.08em", lineHeight:1, color:"#fff" }}>SKBS HI-POWER</div>
+              <div style={{ fontSize:8, letterSpacing:"0.3em", color:"#D4AF37", fontWeight:700, textTransform:"uppercase" }}>Borewell Specialists • Est. 2009</div>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <a href="tel:9698988383" className="bg-[#D4AF37] text-[#0F172A] p-2.5 rounded-full font-black shadow-lg">
-              <Phone size={14} />
-            </a>
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white md:hidden focus:outline-none">
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+
+          {/* Desktop links */}
+          {!isMobile && (
+            <div style={{ display:"flex", alignItems:"center", gap:40 }}>
+              {["Services","Works","Process","Contact"].map(l => (
+                <a key={l} href={`#${l.toLowerCase()}`} className="nav-a">{l}</a>
+              ))}
+              <a href="tel:9698988383" style={{ background:gold, color:"#060A14", padding:"10px 24px", borderRadius:50, fontWeight:800, fontSize:12, letterSpacing:"0.1em", textTransform:"uppercase", textDecoration:"none", display:"flex", alignItems:"center", gap:8, boxShadow:"0 4px 20px rgba(212,175,55,0.4)" }}>
+                <Phone size={13} /> 96989 88383
+              </a>
+            </div>
+          )}
+
+          {/* Mobile icons */}
+          {isMobile && (
+            <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+              <a href="tel:9698988383" style={{ width:40, height:40, background:gold, borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", boxShadow:"0 4px 15px rgba(212,175,55,0.4)" }}>
+                <Phone size={16} color="#060A14" />
+              </a>
+              <button onClick={() => setMenu(!menu)} style={{ background:"none", border:"none", color:"#fff", cursor:"pointer", padding:4 }}>
+                {menu ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
+          )}
         </div>
 
+        {/* Mobile dropdown */}
         <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-              className="md:hidden bg-[#0F172A] border-t border-white/10 mt-4 pb-10 flex flex-col gap-6 font-black text-white uppercase text-center"
+          {menu && isMobile && (
+            <motion.div
+              initial={{ opacity:0, height:0 }} animate={{ opacity:1, height:"auto" }} exit={{ opacity:0, height:0 }}
+              style={{ overflow:"hidden", marginTop:16 }}
             >
-              <a href="#services" onClick={() => setIsMenuOpen(false)} className="pt-8">Services</a>
-              <a href="#works" onClick={() => setIsMenuOpen(false)}>Our Works</a>
-              <a href="#contact" onClick={() => setIsMenuOpen(false)}>Contact</a>
+              <div style={{ display:"flex", flexDirection:"column", gap:4, paddingBottom:20 }}>
+                {["Services","Works","Process","Contact"].map(l => (
+                  <a key={l} href={`#${l.toLowerCase()}`} onClick={() => setMenu(false)}
+                    style={{ display:"block", padding:"14px 0", borderBottom:"1px solid rgba(255,255,255,0.06)", color:"#fff", textDecoration:"none", fontWeight:700, fontSize:20, letterSpacing:"0.04em" }}
+                  >{l}</a>
+                ))}
+                <a href="https://wa.me/919698988383"
+                  style={{ marginTop:16, display:"flex", alignItems:"center", justifyContent:"center", gap:10, background:gold, color:"#060A14", padding:"15px 24px", borderRadius:14, fontWeight:800, fontSize:14, textDecoration:"none" }}>
+                  <MessageCircle size={18} /> WhatsApp Us
+                </a>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </nav>
 
-      {/* --- HERO SECTION: RE-ENGINEERED TO REMOVE OVERLAP --- */}
-      <section className="relative h-[100dvh] bg-[#0F172A] overflow-hidden">
-        <Swiper 
-          modules={[Pagination, Autoplay]} 
-          speed={0} // Instantly switch slide to let Framer handle animation
-          autoplay={{ delay: 5000, disableOnInteraction: false }} 
-          onSlideChange={(swiper) => setActiveSlide(swiper.activeIndex)} 
-          className="h-full w-full"
-        >
-          {HERO_SLIDES.map((slide, index) => (
-            <SwiperSlide key={index} className="h-full w-full">
-              {/* This container ensures only active slide content renders */}
-              <AnimatePresence mode="wait">
-                {activeSlide === index && (
-                  <motion.div 
-                    initial={{ opacity: 0 }} 
-                    animate={{ opacity: 1 }} 
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="relative h-full w-full flex items-center px-6"
-                  >
-                    {/* Background */}
-                    <div className="absolute inset-0 z-0">
-                      <img src={slide.image} className="w-full h-full object-cover opacity-30" alt="Borewell" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-[#0F172A]/40 to-transparent" />
-                    </div>
+      {/* ── HERO ─────────────────────────────── */}
+      <section style={{ position:"relative", height:"100dvh", overflow:"hidden", background: dark }}>
+        {/* Slides */}
+        <AnimatePresence mode="wait">
+          <motion.div key={slide} initial={{ opacity:0, scale:1.04 }} animate={{ opacity:1, scale:1 }} exit={{ opacity:0 }} transition={{ duration:1.1 }}
+            style={{ position:"absolute", inset:0 }}>
+            <img src={SLIDES[slide].img} alt="" style={{ width:"100%", height:"100%", objectFit:"cover", opacity:0.18 }} />
+          </motion.div>
+        </AnimatePresence>
 
-                    {/* Content */}
-                    <div className="relative z-10 w-full max-w-7xl mx-auto mt-20 md:mt-0">
-                      <motion.div 
-                        initial={{ opacity: 0, y: 20 }} 
-                        animate={{ opacity: 1, y: 0 }} 
-                        transition={{ delay: 0.3, duration: 0.6 }}
-                        className="max-w-3xl space-y-4 text-left"
-                      >
-                        <h2 className="text-[#D4AF37] font-bold tracking-[0.4em] text-[10px] uppercase">{slide.subtitle}</h2>
-                        <h1 className="text-4xl md:text-8xl font-black text-white leading-tight uppercase" dangerouslySetInnerHTML={{ __html: slide.title }} />
-                        <p className="text-slate-300 text-sm md:text-lg max-w-xl leading-relaxed border-l-2 border-[#D4AF37] pl-4 italic">
-                          {slide.description}
-                        </p>
-                        <div className="pt-4">
-                          <button className="w-full md:w-auto bg-[#D4AF37] text-[#0F172A] px-10 py-4 rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-2xl active:scale-95 transition-all">
-                            {slide.cta}
-                          </button>
-                        </div>
-                      </motion.div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </section>
+        {/* Overlay layers */}
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(105deg,rgba(6,10,20,0.98) 0%,rgba(6,10,20,0.65) 55%,rgba(6,10,20,0.2) 100%)" }} />
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,#060A14 0%,transparent 45%)" }} />
 
-      {/* --- STATS SECTION --- */}
-      <section className="bg-white py-10 border-b border-slate-100 relative z-20 -mt-10 mx-6 rounded-3xl shadow-2xl md:mx-0 md:rounded-none">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {[
-            { label: 'Experience', val: '15+', icon: <Award className="text-[#D4AF37]" size={18} /> },
-            { label: 'Bores Done', val: '2500+', icon: <CheckCircle2 className="text-[#D4AF37]" size={18} /> },
-            { label: 'Max Depth', val: '1500ft', icon: <Waves className="text-[#D4AF37]" size={18} /> },
-            { label: 'Power Tech', val: 'Hi-PSI', icon: <Zap className="text-[#D4AF37]" size={18} /> },
-          ].map((stat, i) => (
-            <div key={i} className="space-y-1">
-              <div className="flex justify-center mb-1 font-sans">{stat.icon}</div>
-              <p className="text-2xl font-black text-[#0F172A] font-sans">{stat.val}</p>
-              <p className="text-slate-500 font-bold text-[8px] uppercase tracking-widest font-sans">{stat.label}</p>
-            </div>
+        {/* Decorative glow (desktop only) */}
+        {!isMobile && (
+          <div style={{ position:"absolute", top:"15%", right:"8%", width:400, height:400, borderRadius:"50%", background:"radial-gradient(circle,rgba(212,175,55,0.07) 0%,transparent 65%)", animation:"floatY 7s ease-in-out infinite", pointerEvents:"none" }} />
+        )}
+
+        {/* Slide content */}
+        <div style={{ position:"relative", zIndex:10, height:"100%", maxWidth:1280, margin:"0 auto", padding: isMobile ? "0 20px" : "0 40px", display:"flex", alignItems:"center" }}>
+          <AnimatePresence mode="wait">
+            <motion.div key={slide} initial={{ opacity:0, y:28 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-18 }} transition={{ duration:0.65, ease:[0.22,0.61,0.36,1] }}
+              style={{ maxWidth:680, paddingTop: isMobile ? 80 : 0 }}>
+              {/* Tag pill */}
+              <motion.div initial={{ opacity:0, x:-16 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.2 }}
+                style={{ display:"inline-flex", alignItems:"center", gap:8, ...glass, borderRadius:50, padding:"7px 18px", marginBottom:28 }}>
+                <span style={{ width:6, height:6, borderRadius:"50%", background:"#D4AF37", flexShrink:0 }} />
+                <span style={{ fontSize:11, letterSpacing:"0.2em", fontWeight:700, color:"#D4AF37", textTransform:"uppercase" }}>{SLIDES[slide].tag}</span>
+              </motion.div>
+
+              {/* Title */}
+              <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.3 }}>
+                <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize: isMobile ? "clamp(62px,18vw,90px)" : "clamp(80px,11vw,130px)", lineHeight:0.93, color:"#fff" }}>
+                  {SLIDES[slide].h1}
+                </div>
+                <div className="gold-shimmer" style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize: isMobile ? "clamp(62px,18vw,90px)" : "clamp(80px,11vw,130px)", lineHeight:0.93, display:"block" }}>
+                  {SLIDES[slide].h2}
+                </div>
+              </motion.div>
+
+              {/* Description */}
+              <motion.p initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:0.45 }}
+                style={{ color:"rgba(255,255,255,0.58)", fontSize: isMobile ? 14 : 17, lineHeight:1.75, margin:"24px 0 36px", borderLeft:"3px solid #D4AF37", paddingLeft:16, maxWidth:480 }}>
+                {SLIDES[slide].desc}
+              </motion.p>
+
+              {/* CTAs */}
+              <motion.div initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.55 }}
+                style={{ display:"flex", gap:14, flexWrap:"wrap" }}>
+                <a href="tel:9698988383" style={S.btn("gold")}>{SLIDES[slide].cta} <ArrowRight size={15} /></a>
+                <a href="https://wa.me/919698988383" style={S.btn("glass")}><MessageCircle size={15} /> WhatsApp</a>
+              </motion.div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Slide dots */}
+        <div style={{ position:"absolute", bottom: isMobile ? 90 : 36, left:"50%", transform:"translateX(-50%)", display:"flex", gap:8, zIndex:20 }}>
+          {SLIDES.map((_, i) => (
+            <button key={i} onClick={() => setSlide(i)} style={{ width: i===slide ? 32 : 8, height:8, borderRadius:4, background: i===slide ? "#D4AF37" : "rgba(255,255,255,0.28)", border:"none", cursor:"pointer", transition:"all 0.35s", padding:0 }} />
           ))}
         </div>
       </section>
 
-      {/* --- SERVICES (IMAGE CARDS) --- */}
-      <section id="services" className="py-24 px-6 bg-slate-50">
-        <div className="max-w-7xl mx-auto space-y-12">
-          <div className="space-y-2 text-center md:text-left">
-            <h2 className="text-[#D4AF37] font-black tracking-widest text-[10px] uppercase">Technical Solutions</h2>
-            <h3 className="text-4xl font-black text-[#0F172A] uppercase tracking-tighter">Our Services</h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="relative group overflow-hidden rounded-[40px] h-[400px] shadow-2xl">
-              <img src="https://5.imimg.com/data5/ANDROID/Default/2022/6/IP/VS/OL/94950679/product-jpeg-500x500.jpg" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Rig" />
-              <div className="absolute inset-0 bg-[#0F172A]/80 p-10 flex flex-col justify-end space-y-4">
-                <Construction size={40} className="text-[#D4AF37]" />
-                <h4 className="text-3xl font-black text-white uppercase tracking-tighter">6.5" Drilling</h4>
-                <p className="text-slate-400 text-sm italic leading-relaxed">Heavy-duty industrial rigs capable of reaching maximum depths with high-pressure output.</p>
-              </div>
-            </div>
-
-            <div className="relative group overflow-hidden rounded-[40px] h-[400px] shadow-2xl">
-              <img src="https://i.ytimg.com/vi/spN1mvOzZrE/maxresdefault.jpg" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Well" />
-              <div className="absolute inset-0 bg-white/95 p-10 flex flex-col justify-end space-y-4 text-[#0F172A]">
-                <Droplets size={40} className="text-[#D4AF37]" />
-                <h4 className="text-3xl font-black uppercase tracking-tighter">Side-Bore Tech</h4>
-                <p className="text-slate-500 text-sm italic leading-relaxed">Rejuvenate old open wells. We drill horizontally inside to find hidden water veins.</p>
-              </div>
-            </div>
-          </div>
+      {/* ── GOLD TICKER ──────────────────────── */}
+      <div style={{ background:gold, overflow:"hidden", padding:"13px 0" }}>
+        <div style={{ display:"flex", animation:"ticker 22s linear infinite", width:"max-content" }}>
+          {[0,1,2,3].map(i => (
+            <span key={i} style={{ whiteSpace:"nowrap", padding:"0 48px", fontWeight:800, fontSize:12, letterSpacing:"0.22em", textTransform:"uppercase", color:"#060A14" }}>
+              ⚡ 15+ Years Experience &nbsp;•&nbsp; 2500+ Borewells Done &nbsp;•&nbsp; Cumbum • Theni &nbsp;•&nbsp; 1500 ft Max Depth &nbsp;•&nbsp; 24/7 Support &nbsp;•&nbsp; 100% Success Rate &nbsp;
+            </span>
+          ))}
         </div>
-      </section>
+      </div>
 
-      {/* --- OUR WORKS (1X2 MOBILE GRID) --- */}
-      <section id="works" className="py-24 px-4 bg-white">
-        <div className="max-w-7xl mx-auto space-y-12">
-          <div className="text-center">
-            <h2 className="text-[#D4AF37] font-black tracking-widest text-[10px] uppercase">Field Portfolio</h2>
-            <h3 className="text-4xl font-black text-[#0F172A] uppercase tracking-tighter font-sans">Our Works</h3>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {WORKS_GALLERY.map((work, idx) => (
-              <div key={idx} className="relative group overflow-hidden rounded-[20px] h-48 md:h-64 shadow-xl border border-slate-100">
-                <img src={work.img} className="w-full h-full object-cover" alt={work.title} />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-                <p className="absolute bottom-4 left-4 text-[11px] text-[#D4AF37] font-black uppercase tracking-widest">{work.title}</p>
-              </div>
+      {/* ── STATS ────────────────────────────── */}
+      <section style={{ ...S.section(dark), paddingTop:80, paddingBottom:80 }}>
+        <div style={S.inner}>
+          <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4,1fr)", gap:20 }}>
+            {[
+              { n:"15", s:"+", label:"Years of Trust", sub:"Since 2009", icon:Award },
+              { n:"2500", s:"+", label:"Borewells Done", sub:"Across Theni", icon:CheckCircle2 },
+              { n:"1500", s:"ft", label:"Max Depth", sub:"Proven Reach", icon:Waves },
+              { n:"100", s:"%", label:"Success Rate", sub:"Guaranteed Water", icon:Target },
+            ].map((st, i) => (
+              <FadeUp key={i} delay={i * 0.09}>
+                <div style={{ ...glassStrong, borderRadius:24, padding: isMobile ? "26px 18px" : "34px 24px", textAlign:"center", position:"relative", overflow:"hidden" }}>
+                  <div style={{ position:"absolute", top:-14, right:-14, opacity:0.04 }}><st.icon size={90} /></div>
+                  <div style={{ marginBottom:12 }}><st.icon size={22} color="#D4AF37" /></div>
+                  <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize: isMobile ? 48 : 60, lineHeight:1, color:"#fff", marginBottom:4 }}>
+                    <Counter to={st.n} suffix={st.s} />
+                  </div>
+                  <div style={{ fontWeight:700, fontSize:13, color:"rgba(255,255,255,0.85)", marginBottom:4 }}>{st.label}</div>
+                  <div style={{ fontSize:10, color:"#D4AF37", letterSpacing:"0.2em", textTransform:"uppercase", fontWeight:600 }}>{st.sub}</div>
+                </div>
+              </FadeUp>
             ))}
           </div>
         </div>
       </section>
 
-      {/* --- GOOGLE MAPS --- */}
-      <section id="location" className="py-20 px-6 bg-slate-50">
-        <a href="https://maps.app.goo.gl/p5WBtg7MyCHzQNk96" target="_blank" rel="noreferrer" className="block relative group overflow-hidden rounded-[40px] shadow-2xl border-4 border-white max-w-5xl mx-auto">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15715.12345678901!2d77.28!3d9.73!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b07!2zQ3VtYnVtLCBUYW1pbCBOYWR1!5e0!3m2!1sen!2sin!4v1" className="w-full h-[400px] border-0 pointer-events-none filter grayscale group-hover:grayscale-0 transition-all duration-1000" loading="lazy" />
-          <div className="absolute inset-0 bg-[#0F172A]/40 flex flex-col items-center justify-center group-hover:bg-transparent transition-all">
-            <MapPin className="text-white mb-2" size={40} />
-            <div className="bg-white text-[#0F172A] px-6 py-3 rounded-full font-black text-xs uppercase tracking-[0.2em] shadow-2xl">Get Directions</div>
+      {/* ── SERVICES ─────────────────────────── */}
+      <section id="services" style={S.section(mid)}>
+        <div style={S.inner}>
+          <FadeUp>
+            <div style={{ display:"flex", flexDirection: isMobile ? "column" : "row", justifyContent:"space-between", alignItems: isMobile ? "flex-start" : "flex-end", marginBottom:56, gap:20 }}>
+              <div>
+                <div style={S.tag}>Technical Solutions</div>
+                <h2 style={S.heading(76)}>
+                  OUR <span className="gold-shimmer">SERVICES</span>
+                </h2>
+              </div>
+              {!isMobile && (
+                <a href="tel:9698988383" style={{ ...S.btn("gold"), flexShrink:0 }}>
+                  <Phone size={14} /> Get Free Quote
+                </a>
+              )}
+            </div>
+          </FadeUp>
+
+          <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3,1fr)", gap:20 }}>
+            {SERVICES.map((svc, i) => (
+              <FadeUp key={i} delay={i * 0.08}>
+                <div className="svc-card" style={{ borderRadius:26, overflow:"hidden", position:"relative", height: isMobile ? 280 : 340, border:"1px solid rgba(255,255,255,0.06)", cursor:"pointer" }}>
+                  <img src={svc.img} alt={svc.title} style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+                  <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(6,10,20,0.98) 38%,rgba(6,10,20,0.25) 100%)", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:26 }}>
+                    <span style={{ display:"inline-block", background:"rgba(212,175,55,0.18)", border:"1px solid rgba(212,175,55,0.35)", borderRadius:50, padding:"4px 13px", fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", color:"#D4AF37", fontWeight:700, marginBottom:11, alignSelf:"flex-start" }}>{svc.tag}</span>
+                    <div style={{ display:"flex", alignItems:"center", gap:9, marginBottom:8 }}>
+                      <svc.icon size={18} color="#D4AF37" />
+                      <h3 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:26, letterSpacing:"0.04em", color:"#fff" }}>{svc.title}</h3>
+                    </div>
+                    <p style={{ fontSize:12.5, lineHeight:1.65, color:"rgba(255,255,255,0.58)" }}>{svc.desc}</p>
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
           </div>
-        </a>
+        </div>
       </section>
 
-      {/* --- DIGITAL VISITING CARD FOOTER --- */}
-      <footer id="contact" className="bg-[#0F172A] pt-24 pb-12 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-[45px] p-10 md:p-16 shadow-[0_35px_60px_-15px_rgba(212,175,55,0.3)] relative overflow-hidden group">
-            <div className="flex flex-col items-center text-center space-y-8">
-              <div className="relative">
-                <div className="absolute -inset-4 border-2 border-[#D4AF37] rounded-full rotate-45 group-hover:rotate-0 transition-all duration-700" />
-                <div className="w-32 h-32 rounded-full overflow-hidden border-8 border-white shadow-2xl relative z-10">
-                  <img src="https://lh3.googleusercontent.com/p/AF1QipO7h-NrBnDlQE8h93GZ7yh3NRCjtl7yMg7-UR1a=s1360-w1360-h1020-rw" className="w-full h-full object-cover filter grayscale" alt="Owner" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <h4 className="text-4xl font-black text-[#0F172A] tracking-tighter uppercase leading-none font-sans">SKBS HI-POWER</h4>
-                <p className="text-[12px] text-[#D4AF37] font-black tracking-[0.4em] uppercase leading-none font-sans">Cumbum • Theni District</p>
-              </div>
-              <div className="w-24 h-1 bg-slate-100 rounded-full" />
-              <div className="space-y-6 w-full text-[#0F172A]">
-                <div className="flex flex-col items-center">
-                  <User size={18} className="text-[#D4AF37] mb-1" />
-                  <span className="font-black text-sm uppercase tracking-widest">Shanker</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Phone size={18} className="text-[#D4AF37] mb-1" />
-                  <span className="font-black text-lg">96989 88383</span>
-                </div>
-                <div className="flex flex-col items-center px-6">
-                  <MapPin size={18} className="text-[#D4AF37] mb-1" />
-                  <span className="font-bold text-[10px] text-slate-400 uppercase leading-relaxed tracking-wider">Above SBI ATM, L.F. Road, Cumbum - 625 516.</span>
-                </div>
-              </div>
-              <a href="https://wa.me/919698988383" className="w-full bg-[#0F172A] text-white py-5 rounded-3xl font-black text-xs uppercase tracking-[0.3em] shadow-2xl hover:bg-[#D4AF37] hover:text-[#0F172A] transition-all">WhatsApp Business</a>
+      {/* ── WHY CHOOSE US ────────────────────── */}
+      <section id="about" style={{ ...S.section(dark), position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:700, height:700, borderRadius:"50%", background:"radial-gradient(circle,rgba(212,175,55,0.04) 0%,transparent 65%)", pointerEvents:"none" }} />
+        <div style={{ ...S.inner, display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 50 : 80, alignItems:"start" }}>
+          <FadeUp>
+            <div>
+              <div style={S.tag}>Why Trust Us</div>
+              <h2 style={{ ...S.heading(70), marginBottom:22 }}>THE SKBS<br /><span className="gold-shimmer">DIFFERENCE</span></h2>
+              <p style={{ color:"rgba(255,255,255,0.5)", fontSize:15, lineHeight:1.85, marginBottom:32, maxWidth:420 }}>
+                With over 15 years drilling into the heart of Theni district, we've earned the trust of farmers, industries, and homes alike. Reliability, precision, and lasting solutions — that's the SKBS promise.
+              </p>
+              <ul style={{ listStyle:"none", display:"flex", flexDirection:"column", gap:12, marginBottom:36 }}>
+                {["Free site survey before drilling","Certified drilling engineers","Post-drill water quality report"].map((item, i) => (
+                  <li key={i} style={{ display:"flex", alignItems:"center", gap:12, color:"rgba(255,255,255,0.75)", fontSize:14 }}>
+                    <span style={{ width:22, height:22, background:"rgba(212,175,55,0.15)", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                      <CheckCheck size={12} color="#D4AF37" />
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <a href="tel:9698988383" style={S.btn("gold")}><Phone size={14} /> Call Shanker Now</a>
             </div>
+          </FadeUp>
+
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 }}>
+            {WHY_US.map((item, i) => (
+              <FadeUp key={i} delay={i * 0.08}>
+                <div className="why-card" style={{ ...glass, borderRadius:20, padding:"22px 18px" }}>
+                  <div style={{ width:44, height:44, background:"rgba(212,175,55,0.12)", borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14 }}>
+                    <item.icon size={20} color="#D4AF37" />
+                  </div>
+                  <div style={{ fontWeight:700, fontSize:14, color:"#fff", marginBottom:7 }}>{item.title}</div>
+                  <div style={{ fontSize:12, color:"rgba(255,255,255,0.5)", lineHeight:1.65 }}>{item.desc}</div>
+                </div>
+              </FadeUp>
+            ))}
           </div>
-          <p className="text-center text-slate-600 text-[10px] font-black uppercase tracking-[0.5em] mt-24 italic opacity-50">Handcrafted by Gobi Krishnan • Theni Offers</p>
+        </div>
+      </section>
+
+      {/* ── PROCESS ──────────────────────────── */}
+      <section id="process" style={S.section(mid)}>
+        <div style={S.inner}>
+          <FadeUp style={{ textAlign:"center", marginBottom:60 }}>
+            <div style={S.tag}>How We Work</div>
+            <h2 style={{ ...S.heading(72), display:"inline-block" }}>THE PROCESS</h2>
+          </FadeUp>
+
+          <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(4,1fr)", gap: isMobile ? 0 : 32, position:"relative" }}>
+            {/* Desktop connector line */}
+            {!isMobile && (
+              <div style={{ position:"absolute", top:36, left:"12.5%", right:"12.5%", height:1, background:"linear-gradient(to right,rgba(212,175,55,0.15),rgba(212,175,55,0.5),rgba(212,175,55,0.15))", zIndex:0 }} />
+            )}
+
+            {PROCESS.map((step, i) => (
+              <FadeUp key={i} delay={i * 0.1}>
+                <div className="proc-step" style={{ position:"relative", display:"flex", flexDirection: isMobile ? "row" : "column", gap: isMobile ? 20 : 22, alignItems: isMobile ? "flex-start" : "center", textAlign: isMobile ? "left" : "center", padding: isMobile ? "0 0 36px 0" : "0", zIndex:1 }}>
+                  <div style={{ width:56, height:56, ...glassStrong, borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, position:"relative" }}>
+                    <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:22, color:"#D4AF37" }}>{step.n}</span>
+                    {!isMobile && i < PROCESS.length - 1 && (
+                      <div style={{ position:"absolute", right:-100, width:100, height:1, background:"rgba(212,175,55,0.25)", top:"50%", pointerEvents:"none" }} />
+                    )}
+                  </div>
+                  <div>
+                    <h4 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:24, letterSpacing:"0.04em", color:"#fff", marginBottom:8 }}>{step.title}</h4>
+                    <p style={{ fontSize:13, color:"rgba(255,255,255,0.52)", lineHeight:1.7 }}>{step.desc}</p>
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── GALLERY ──────────────────────────── */}
+      <section id="works" style={S.section(dark)}>
+        <div style={S.inner}>
+          <FadeUp style={{ textAlign:"center", marginBottom:56 }}>
+            <div style={S.tag}>Field Portfolio</div>
+            <h2 style={{ ...S.heading(72), display:"inline-block" }}>
+              OUR <span className="gold-shimmer">WORKS</span>
+            </h2>
+          </FadeUp>
+
+          <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3,1fr)", gap:14 }}>
+            {GALLERY.map((g, i) => (
+              <FadeUp key={i} delay={i * 0.07}>
+                <div className="gal-item" style={{ borderRadius:20, overflow:"hidden", position:"relative", height: isMobile ? 160 : (i===0||i===3 ? 340 : 230), border:"1px solid rgba(255,255,255,0.05)", cursor:"pointer" }}>
+                  <img src={g.img} alt={g.label} style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+                  <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(6,10,20,0.88) 0%,transparent 55%)", display:"flex", alignItems:"flex-end", padding:"16px 18px" }}>
+                    <div>
+                      <div style={{ fontSize:9, letterSpacing:"0.25em", textTransform:"uppercase", color:"#D4AF37", fontWeight:700, marginBottom:3 }}>Completed</div>
+                      <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:18, color:"#fff" }}>{g.label}</div>
+                    </div>
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ─────────────────────── */}
+      <section style={S.section(mid)}>
+        <div style={S.inner}>
+          <FadeUp style={{ marginBottom:52 }}>
+            <div style={S.tag}>Real Stories</div>
+            <h2 style={S.heading(72)}>CLIENT <span className="gold-shimmer">TRUST</span></h2>
+          </FadeUp>
+
+          <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2,1fr)", gap:20 }}>
+            {TESTIMONIALS.map((t, i) => (
+              <FadeUp key={i} delay={i * 0.1}>
+                <div className="testi-card" style={{ ...glass, borderRadius:24, padding:"28px 26px", position:"relative", overflow:"hidden", border:"1px solid rgba(255,255,255,0.08)" }}>
+                  <div style={{ position:"absolute", top:12, right:18, fontFamily:"Georgia,serif", fontSize:90, color:"rgba(212,175,55,0.07)", lineHeight:1, pointerEvents:"none" }}>"</div>
+                  <StarRow n={t.stars} />
+                  <p style={{ fontSize:14, lineHeight:1.8, color:"rgba(255,255,255,0.7)", margin:"16px 0 22px", fontStyle:"italic" }}>"{t.text}"</p>
+                  <div style={{ display:"flex", alignItems:"center", gap:13 }}>
+                    <div style={{ width:40, height:40, background:"rgba(212,175,55,0.18)", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, fontFamily:"'Bebas Neue',sans-serif", fontSize:20, color:"#D4AF37" }}>
+                      {t.name[0]}
+                    </div>
+                    <div>
+                      <div style={{ fontWeight:700, fontSize:14, color:"#fff" }}>{t.name}</div>
+                      <div style={{ fontSize:11, color:"#D4AF37", letterSpacing:"0.12em" }}>{t.loc}</div>
+                    </div>
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA BANNER ───────────────────────── */}
+      <section style={{ padding: isMobile ? "70px 24px" : "90px 40px", background:gold, position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", top:-60, left:-60, width:250, height:250, borderRadius:"50%", background:"rgba(255,255,255,0.12)", pointerEvents:"none" }} />
+        <div style={{ position:"absolute", bottom:-80, right:-40, width:320, height:320, borderRadius:"50%", background:"rgba(0,0,0,0.1)", pointerEvents:"none" }} />
+        <div style={{ ...S.inner, textAlign:"center", position:"relative", zIndex:1 }}>
+          <FadeUp>
+            <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize: isMobile ? "clamp(44px,12vw,60px)" : "clamp(52px,7vw,88px)", color:"#060A14", lineHeight:0.95, marginBottom:18 }}>
+              READY TO TAP INTO<br />YOUR WATER SOURCE?
+            </h2>
+            <p style={{ fontSize: isMobile ? 14 : 17, color:"rgba(6,10,20,0.65)", marginBottom:36, lineHeight:1.7 }}>
+              Free site survey • Expert consultation • Guaranteed water or no charge
+            </p>
+            <div style={{ display:"flex", gap:16, justifyContent:"center", flexWrap:"wrap" }}>
+              <a href="tel:9698988383" style={{ background:"#060A14", color:"#D4AF37", padding:"16px 40px", borderRadius:50, fontWeight:800, fontSize:13, letterSpacing:"0.12em", textTransform:"uppercase", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:10, boxShadow:"0 8px 30px rgba(6,10,20,0.25)" }}>
+                <Phone size={16} /> Call 96989 88383
+              </a>
+              <a href="https://wa.me/919698988383" style={{ background:"rgba(6,10,20,0.12)", color:"#060A14", padding:"16px 36px", borderRadius:50, fontWeight:800, fontSize:13, letterSpacing:"0.12em", textTransform:"uppercase", textDecoration:"none", border:"2px solid rgba(6,10,20,0.25)", display:"inline-flex", alignItems:"center", gap:10 }}>
+                <MessageCircle size={16} /> WhatsApp Us
+              </a>
+            </div>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* ── LOCATION ─────────────────────────── */}
+      <section id="contact" style={S.section(dark)}>
+        <div style={S.inner}>
+          <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 2fr", gap:44, alignItems:"center" }}>
+            <FadeUp>
+              <div>
+                <div style={S.tag}>Find Us</div>
+                <h2 style={{ ...S.heading(60), marginBottom:28 }}>OUR<br /><span className="gold-shimmer">LOCATION</span></h2>
+                <div style={{ display:"flex", gap:13, marginBottom:18 }}>
+                  <MapPin size={20} color="#D4AF37" style={{ flexShrink:0, marginTop:2 }} />
+                  <p style={{ color:"rgba(255,255,255,0.58)", fontSize:14, lineHeight:1.75 }}>Above SBI ATM, L.F. Road,<br />Cumbum – 625 516,<br />Theni District, Tamil Nadu</p>
+                </div>
+                <div style={{ display:"flex", alignItems:"center", gap:13, marginBottom:24 }}>
+                  <Phone size={20} color="#D4AF37" />
+                  <a href="tel:9698988383" style={{ color:"#fff", fontWeight:700, textDecoration:"none", fontSize:20 }}>96989 88383</a>
+                </div>
+                <a href="https://maps.app.goo.gl/p5WBtg7MyCHzQNk96" target="_blank" rel="noreferrer" style={S.btn("gold")}>
+                  <MapPin size={15} /> Get Directions
+                </a>
+              </div>
+            </FadeUp>
+
+            <FadeUp delay={0.15}>
+              <div style={{ borderRadius:28, overflow:"hidden", border:"1px solid rgba(255,255,255,0.08)", height: isMobile ? 260 : 380 }}>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15715.12345678901!2d77.28!3d9.73!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b07!2zQ3VtYnVtLCBUYW1pbCBOYWR1!5e0!3m2!1sen!2sin!4v1"
+                  style={{ width:"100%", height:"100%", border:0, filter:"invert(90%) hue-rotate(180deg) saturate(0.8)" }} loading="lazy" title="SKBS Location" />
+              </div>
+            </FadeUp>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOOTER ───────────────────────────── */}
+      <footer style={{ background:"#030610", borderTop:"1px solid rgba(255,255,255,0.06)", padding: isMobile ? "60px 20px 120px" : "80px 40px 50px" }}>
+        <div style={S.inner}>
+          <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap:60, marginBottom:56 }}>
+            {/* Brand */}
+            <FadeUp>
+              <div>
+                <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:22 }}>
+                  <div style={{ width:56, height:56, background:gold, borderRadius:16, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                    <Drill size={26} color="#030610" />
+                  </div>
+                  <div>
+                    <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:32, letterSpacing:"0.08em", color:"#fff" }}>SKBS HI-POWER</div>
+                    <div style={{ fontSize:9, letterSpacing:"0.3em", color:"#D4AF37", fontWeight:700, textTransform:"uppercase" }}>Borewell Specialists • Est. 2009</div>
+                  </div>
+                </div>
+                <p style={{ color:"rgba(255,255,255,0.38)", fontSize:13.5, lineHeight:1.85, maxWidth:360, marginBottom:28 }}>
+                  Cumbum's most trusted borewell drilling specialists. Serving Theni district with precision engineering and 15+ years of proven expertise.
+                </p>
+                <div style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
+                  <a href="tel:9698988383" style={S.btn("gold")}><Phone size={14} /> Call Now</a>
+                  <a href="https://wa.me/919698988383" style={{ background:"#25D366", color:"#fff", padding:"12px 22px", borderRadius:50, fontWeight:700, fontSize:13, letterSpacing:"0.06em", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:8 }}>
+                    <MessageCircle size={15} /> WhatsApp
+                  </a>
+                </div>
+              </div>
+            </FadeUp>
+
+            {/* Contact card */}
+            <FadeUp delay={0.15}>
+              <div style={{ ...glassStrong, borderRadius:28, padding: isMobile ? "28px 24px" : "36px 34px", position:"relative", overflow:"hidden" }}>
+                <div style={{ position:"absolute", top:0, right:0, width:160, height:160, background:"radial-gradient(circle,rgba(212,175,55,0.09) 0%,transparent 65%)", pointerEvents:"none" }} />
+                <h3 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:38, letterSpacing:"0.06em", color:"#fff", marginBottom:4 }}>SHANKER</h3>
+                <div style={{ fontSize:11, letterSpacing:"0.25em", textTransform:"uppercase", color:"#D4AF37", fontWeight:700, marginBottom:30 }}>Managing Director</div>
+                <div style={{ display:"flex", flexDirection:"column", gap:18 }}>
+                  {[
+                    { icon:Phone, label:"Mobile", value:"96989 88383", href:"tel:9698988383" },
+                    { icon:MapPin, label:"Address", value:"Above SBI ATM, L.F. Road, Cumbum – 625 516", href:null },
+                  ].map(({ icon:Icon, label, value, href }) => (
+                    <div key={label} style={{ display:"flex", gap:14, alignItems:"flex-start" }}>
+                      <div style={{ width:42, height:42, background:"rgba(212,175,55,0.12)", borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                        <Icon size={16} color="#D4AF37" />
+                      </div>
+                      <div>
+                        <div style={{ fontSize:10, color:"rgba(255,255,255,0.38)", letterSpacing:"0.18em", textTransform:"uppercase", marginBottom:3 }}>{label}</div>
+                        {href
+                          ? <a href={href} style={{ color:"#fff", fontWeight:700, fontSize:17, textDecoration:"none" }}>{value}</a>
+                          : <div style={{ color:"rgba(255,255,255,0.68)", fontSize:13, lineHeight:1.65 }}>{value}</div>
+                        }
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </FadeUp>
+          </div>
+
+          <div style={{ borderTop:"1px solid rgba(255,255,255,0.06)", paddingTop:22, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
+            <div style={{ fontSize:11, color:"rgba(255,255,255,0.25)", letterSpacing:"0.08em" }}>© 2025 SKBS Hi-Power Borewells. All rights reserved.</div>
+            <div style={{ fontSize:10, color:"rgba(255,255,255,0.18)", letterSpacing:"0.18em", textTransform:"uppercase", fontStyle:"italic" }}>Crafted by Gobi Krishnan · Theni Offers</div>
+          </div>
         </div>
       </footer>
+
+      {/* ── FLOATING WHATSAPP ────────────────── */}
+      {!isMobile && (
+        <a href="https://wa.me/919698988383"
+          style={{ position:"fixed", bottom:28, right:28, width:60, height:60, borderRadius:"50%", background:"#25D366", display:"flex", alignItems:"center", justifyContent:"center", boxShadow:"0 8px 28px rgba(37,211,102,0.45)", zIndex:9999, textDecoration:"none", animation:"pulseGold 2.5s infinite" }}>
+          <MessageCircle size={26} color="#fff" fill="#fff" />
+        </a>
+      )}
+
+      {/* ── MOBILE BOTTOM NAV ────────────────── */}
+      {isMobile && (
+        <div style={{ position:"fixed", bottom:0, left:0, right:0, zIndex:999, ...{ background:"rgba(6,10,20,0.96)", backdropFilter:"blur(28px)", WebkitBackdropFilter:"blur(28px)" }, borderTop:"1px solid rgba(255,255,255,0.09)", display:"flex", justifyContent:"space-around", padding:"10px 0 20px" }}>
+          {[
+            { href:"#services", icon:Construction, label:"Services" },
+            { href:"#works", icon:Waves, label:"Works" },
+            { href:"tel:9698988383", icon:Phone, label:"Call", accent:true },
+            { href:"#about", icon:Users, label:"About" },
+            { href:"#contact", icon:MapPin, label:"Location" },
+          ].map(({ href, icon:Icon, label, accent }) => (
+            <a key={label} href={href}
+              style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:4, textDecoration:"none", color: accent ? "#D4AF37" : "rgba(255,255,255,0.55)", minWidth:56 }}>
+              <div style={accent ? { width:46, height:46, background:gold, borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", marginTop:-20, border:"3px solid #060A14", boxShadow:"0 4px 18px rgba(212,175,55,0.5)" } : {}}>
+                <Icon size={20} color={accent ? "#060A14" : "currentColor"} />
+              </div>
+              <span style={{ fontSize:9.5, fontWeight:600, letterSpacing:"0.05em" }}>{label}</span>
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   );
-};
-
-export default App;
+}
