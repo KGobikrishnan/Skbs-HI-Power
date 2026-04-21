@@ -253,17 +253,39 @@ export default function App() {
         ...(scrolled || menu ? { background: "rgba(6,10,20,0.95)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderBottom: "1px solid rgba(255,255,255,0.07)" } : {})
       }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          {/* Logo */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <img
-              src={Logo}
-              alt="SKBS Logo"
-              style={{ width: 48, height: 48, objectFit: 'contain', animation: "pulseGold 2.5s infinite", flexShrink: 0 }}
-            />
-            <div>
-              <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 26, letterSpacing: "0.08em", lineHeight: 1, color: "#fff" }}>SKBS HI-POWER</div>
-              <div style={{ fontSize: 8, letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 700, textTransform: "uppercase" }}>Borewell Specialists • Est 2002</div>
-            </div>
+          {/* Logo & Tagline */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 4 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <img
+                src={Logo}
+                alt="SKBS Logo"
+                  style={{
+                    width: isMobile ? 100 : 140,
+                    height: isMobile ? 100 : 140,
+                    objectFit: 'contain',
+                    flexShrink: 0
+                  }}
+                />
+              </div>
+              {!scrolled && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  style={{
+                    fontSize: isMobile ? 9 : 10,
+                    letterSpacing: "0.25em",
+                    color: "#D4AF37",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    marginTop: -5,
+                    opacity: 0.9,
+                    overflow: "hidden"
+                  }}
+                >
+                  Borewell Specialists • Est 2002
+                </motion.div>
+              )}
           </div>
 
           {/* Desktop links */}
@@ -472,14 +494,14 @@ export default function App() {
               <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 15, lineHeight: 1.85, marginBottom: 32, maxWidth: 420 }}>
                 With over 24 years drilling into the heart of Theni district, we've earned the trust of farmers, industries, and homes alike. Reliability, precision, and lasting solutions — that's the SKBS promise.
               </p>
-              
-              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 40, padding: "12px 16px", background: "rgba(255,255,255,0.04)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.08)", width: "fit-content" }}>
-                <div style={{ width: 44, height: 44, borderRadius: "50%", overflow: "hidden", border: "1.5px solid #D4AF37" }}>
-                  <img src="/assets/profile.png" alt="Shakar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+
+              <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 40, padding: "20px 24px", background: "rgba(255,255,255,0.04)", borderRadius: 28, border: "1px solid rgba(255,255,255,0.08)", width: "fit-content" }}>
+                <div style={{ width: 100, height: 128, borderRadius: 12, overflow: "hidden", border: "2px solid #D4AF37", boxShadow: "0 8px 20px rgba(0,0,0,0.3)" }}>
+                  <img src="/assets/profile.jpeg" alt="Shakar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
                 <div>
-                  <div style={{ color: "#fff", fontWeight: 700, fontSize: 14, letterSpacing: "0.02em" }}>SHAKAR</div>
-                  <div style={{ color: "#D4AF37", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>Founder & MD</div>
+                  <div style={{ color: "#fff", fontWeight: 800, fontSize: 18, letterSpacing: "0.02em", marginBottom: 4 }}>SHAKAR</div>
+                  <div style={{ color: "#D4AF37", fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" }}>Founder & MD</div>
                 </div>
               </div>
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12, marginBottom: 36 }}>
@@ -735,45 +757,94 @@ export default function App() {
 
             {/* Contact card */}
             <FadeUp delay={0.15}>
-              <div style={{ ...glassStrong, borderRadius: 28, padding: isMobile ? "28px 24px" : "36px 34px", position: "relative", overflow: "hidden" }}>
-                <div style={{ position: "absolute", top: 0, right: 0, width: 160, height: 160, background: "radial-gradient(circle,rgba(212,175,55,0.09) 0%,transparent 65%)", pointerEvents: "none" }} />
-                
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28, position: "relative", zIndex: 2 }}>
-                  <div>
-                    <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 38, letterSpacing: "0.06em", color: "#fff", marginBottom: 4 }}>SHAKAR</h3>
-                    <div style={{ fontSize: 11, letterSpacing: "0.25em", textTransform: "uppercase", color: "#D4AF37", fontWeight: 700 }}>Managing Director</div>
+              <div style={{
+                ...glassStrong,
+                borderRadius: 32,
+                padding: isMobile ? "32px 24px" : "44px 40px",
+                position: "relative",
+                overflow: "hidden",
+                boxShadow: "0 20px 50px rgba(0,0,0,0.4), inset 0 0 20px rgba(212,175,55,0.05)",
+                border: "1px solid rgba(212,175,55,0.25)"
+              }}>
+                <div style={{ position: "absolute", top: 0, right: 0, width: "100%", height: "100%", background: "radial-gradient(circle at top right,rgba(212,175,55,0.1) 0%,transparent 70%)", pointerEvents: "none" }} />
+
+                <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row-reverse", justifyContent: "space-between", alignItems: isMobile ? "center" : "flex-start", gap: 32, marginBottom: 40, position: "relative", zIndex: 2 }}>
+                  {/* Profile Image - Enlarged Passport Size */}
+                  <div style={{
+                    width: isMobile ? 140 : 160,
+                    height: isMobile ? 180 : 205,
+                    borderRadius: 16,
+                    overflow: "hidden",
+                    border: "3px solid #D4AF37",
+                    boxShadow: "0 15px 35px rgba(0,0,0,0.6)",
+                    flexShrink: 0,
+                    transform: "rotate(2deg)"
+                  }}>
+                    <img src="/assets/profile.jpeg" alt="Shakar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   </div>
-                  <div style={{ width: isMobile ? 70 : 90, height: isMobile ? 70 : 90, borderRadius: 20, overflow: "hidden", border: "2px solid rgba(212,175,55,0.3)", boxShadow: "0 10px 25px rgba(0,0,0,0.5)", flexShrink: 0 }}>
-                    <img src="/assets/profile.png" alt="Shakar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+
+                  <div style={{ textAlign: isMobile ? "center" : "left" }}>
+                    <div style={{ display: "inline-block", background: "rgba(212,175,55,0.15)", padding: "4px 12px", borderRadius: 6, marginBottom: 12 }}>
+                      <span style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "#D4AF37", fontWeight: 800 }}>Digital Business Card</span>
+                    </div>
+                    <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: isMobile ? 48 : 56, letterSpacing: "0.06em", color: "#fff", lineHeight: 1, marginBottom: 8 }}>SHAKAR</h3>
+                    <div style={{ fontSize: 14, letterSpacing: "0.3em", textTransform: "uppercase", color: "#D4AF37", fontWeight: 700, marginBottom: 16 }}>Managing Director</div>
+                    <div style={{ width: 40, height: 3, background: gold, borderRadius: 2, margin: isMobile ? "0 auto" : "0" }} />
                   </div>
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 24 }}>
                   {[
-                    { icon: Phone, label: "Mobile 1", value: "96989 88383", href: "tel:9698988383" },
-                    { icon: Phone, label: "Mobile 2", value: "97095 12345", href: "tel:9709512345" },
-                    { icon: MapPin, label: "Address", value: "Above SBI ATM, L.F. Road, Cumbum – 625 516", href: null },
+                    { icon: Phone, label: "Primary Contact", value: "96989 88383", href: "tel:9698988383" },
+                    { icon: Phone, label: "Secondary Contact", value: "97095 12345", href: "tel:9709512345" },
+                    { icon: MapPin, label: "Experience Center", value: "Above SBI ATM, L.F. Road, Cumbum", href: "https://maps.app.goo.gl/p5WBtg7MyCHzQNk96" },
+                    { icon: MessageCircle, label: "WhatsApp", value: "Chat with Us", href: "https://wa.me/919698988383" },
                   ].map(({ icon: Icon, label, value, href }) => (
-                    <div key={label} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-                      <div style={{ width: 42, height: 42, background: "rgba(212,175,55,0.12)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                        <Icon size={16} color="#D4AF37" />
+                    <a key={label} href={href} target="_blank" rel="noreferrer" style={{
+                      display: "flex",
+                      gap: 16,
+                      alignItems: "center",
+                      textDecoration: "none",
+                      padding: "16px",
+                      background: "rgba(255,255,255,0.03)",
+                      borderRadius: 16,
+                      border: "1px solid rgba(255,255,255,0.05)",
+                      transition: "all 0.3s ease"
+                    }} className="contact-link">
+                      <div style={{ width: 44, height: 44, background: "rgba(212,175,55,0.12)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        <Icon size={18} color="#D4AF37" />
                       </div>
                       <div>
-                        <div style={{ fontSize: 10, color: "rgba(255,255,255,0.38)", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 3 }}>{label}</div>
-                        {href
-                          ? <a href={href} style={{ color: "#fff", fontWeight: 700, fontSize: 17, textDecoration: "none" }}>{value}</a>
-                          : <div style={{ color: "rgba(255,255,255,0.68)", fontSize: 13, lineHeight: 1.65 }}>{value}</div>
-                        }
+                        <div style={{ fontSize: 9, color: "rgba(255,255,255,0.4)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 2 }}>{label}</div>
+                        <div style={{ color: "#fff", fontWeight: 700, fontSize: 15 }}>{value}</div>
                       </div>
-                    </div>
+                    </a>
                   ))}
                 </div>
               </div>
             </FadeUp>
           </div>
 
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 22, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
-            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", letterSpacing: "0.08em" }}>© 2025 SKBS Hi-Power Borewells. All rights reserved.</div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.18)", letterSpacing: "0.18em", textTransform: "uppercase", fontStyle: "italic" }}>Crafted by Navi Promotions · Theni</div>
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 22, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", letterSpacing: "0.08em" }}>© 2025 SKBS Hi-Power Borewells. All rights reserved.</div>
+            <div style={{
+              fontSize: 11,
+              fontWeight: 600,
+              color: "rgba(255,255,255,0.7)",
+              letterSpacing: "0.1em",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              background: "rgba(212,175,55,0.08)",
+              padding: "6px 14px",
+              borderRadius: 50,
+              border: "1px solid rgba(212,175,55,0.15)"
+            }}>
+              <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, textTransform: "uppercase" }}>Crafted by</span>
+              <span style={{ color: "#D4AF37", fontWeight: 800 }}>Navi Promotions</span>
+              <span style={{ width: 4, height: 4, borderRadius: "50%", background: "rgba(212,175,55,0.4)" }} />
+              <span style={{ color: "rgba(255,255,255,0.5)" }}>Theni</span>
+            </div>
           </div>
         </div>
       </footer>
