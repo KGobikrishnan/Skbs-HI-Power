@@ -501,7 +501,7 @@ export default function App() {
                 </div>
                 <div>
                   <div style={{ color: "#fff", fontWeight: 800, fontSize: 18, letterSpacing: "0.02em", marginBottom: 4 }}>SHANKAR</div>
-                  <div style={{ color: "#D4AF37", fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" }}>Founder & MD</div>
+                  <div style={{ color: "#D4AF37", fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" }}>Managing Director</div>
                 </div>
               </div>
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12, marginBottom: 36 }}>
@@ -699,7 +699,7 @@ export default function App() {
                 <h2 style={{ ...S.heading(60), marginBottom: 28 }}>OUR<br /><span className="gold-shimmer">LOCATION</span></h2>
                 <div style={{ display: "flex", gap: 13, marginBottom: 18 }}>
                   <MapPin size={20} color="#D4AF37" style={{ flexShrink: 0, marginTop: 2 }} />
-                  <p style={{ color: "rgba(255,255,255,0.58)", fontSize: 14, lineHeight: 1.75 }}>SBI ATM Above, Kulalar Mandapam,<br />L.F. Road, Cumbum – 625 516,<br />Theni District, Tamil Nadu</p>
+                  <p style={{ color: "rgba(255,255,255,0.58)", fontSize: 14, lineHeight: 1.75 }}>SBI ATM Above, Kulalar Mandapam , L.F. Road,<br />Cumbum – 625 516,<br />Theni District, Tamil Nadu</p>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
