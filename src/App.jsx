@@ -259,33 +259,33 @@ export default function App() {
               <img
                 src={Logo}
                 alt="SKBS Logo"
-                  style={{
-                    width: isMobile ? 100 : 140,
-                    height: isMobile ? 100 : 140,
-                    objectFit: 'contain',
-                    flexShrink: 0
-                  }}
-                />
-              </div>
-              {!scrolled && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  style={{
-                    fontSize: isMobile ? 9 : 10,
-                    letterSpacing: "0.25em",
-                    color: "#D4AF37",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    marginTop: -5,
-                    opacity: 0.9,
-                    overflow: "hidden"
-                  }}
-                >
-                  Borewell Specialists • Est 2002
-                </motion.div>
-              )}
+                style={{
+                  width: isMobile ? 100 : 140,
+                  height: isMobile ? 100 : 140,
+                  objectFit: 'contain',
+                  flexShrink: 0
+                }}
+              />
+            </div>
+            {!scrolled && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                style={{
+                  fontSize: isMobile ? 9 : 10,
+                  letterSpacing: "0.25em",
+                  color: "#D4AF37",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  marginTop: -5,
+                  opacity: 0.9,
+                  overflow: "hidden"
+                }}
+              >
+                Borewell Specialists • Est 2002
+              </motion.div>
+            )}
           </div>
 
           {/* Desktop links */}
@@ -497,10 +497,10 @@ export default function App() {
 
               <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 40, padding: "20px 24px", background: "rgba(255,255,255,0.04)", borderRadius: 28, border: "1px solid rgba(255,255,255,0.08)", width: "fit-content" }}>
                 <div style={{ width: 100, height: 128, borderRadius: 12, overflow: "hidden", border: "2px solid #D4AF37", boxShadow: "0 8px 20px rgba(0,0,0,0.3)" }}>
-                  <img src="/assets/profile.jpeg" alt="Shakar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <img src="/assets/profile.jpeg" alt="Shankar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
                 <div>
-                  <div style={{ color: "#fff", fontWeight: 800, fontSize: 18, letterSpacing: "0.02em", marginBottom: 4 }}>SHAKAR</div>
+                  <div style={{ color: "#fff", fontWeight: 800, fontSize: 18, letterSpacing: "0.02em", marginBottom: 4 }}>SHANKAR</div>
                   <div style={{ color: "#D4AF37", fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" }}>Founder & MD</div>
                 </div>
               </div>
@@ -675,7 +675,7 @@ export default function App() {
               READY TO TAP INTO<br />YOUR WATER SOURCE?
             </h2>
             <p style={{ fontSize: isMobile ? 14 : 17, color: "rgba(6,10,20,0.65)", marginBottom: 36, lineHeight: 1.7 }}>
-              Free site survey • Expert consultation • Guaranteed water or no charge
+              Free site survey • Expert consultation • Guaranteed water
             </p>
             <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
               <a href="tel:9698988383" style={{ background: "#060A14", color: "#D4AF37", padding: "16px 40px", borderRadius: 50, fontWeight: 800, fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, boxShadow: "0 8px 30px rgba(6,10,20,0.25)" }}>
@@ -780,14 +780,14 @@ export default function App() {
                     flexShrink: 0,
                     transform: "rotate(2deg)"
                   }}>
-                    <img src="/assets/profile.jpeg" alt="Shakar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <img src="/assets/profile.jpeg" alt="Shankar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   </div>
 
                   <div style={{ textAlign: isMobile ? "center" : "left" }}>
                     <div style={{ display: "inline-block", background: "rgba(212,175,55,0.15)", padding: "4px 12px", borderRadius: 6, marginBottom: 12 }}>
                       <span style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "#D4AF37", fontWeight: 800 }}>Digital Business Card</span>
                     </div>
-                    <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: isMobile ? 48 : 56, letterSpacing: "0.06em", color: "#fff", lineHeight: 1, marginBottom: 8 }}>SHAKAR</h3>
+                    <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: isMobile ? 48 : 56, letterSpacing: "0.06em", color: "#fff", lineHeight: 1, marginBottom: 8 }}>SHANKAR</h3>
                     <div style={{ fontSize: 14, letterSpacing: "0.3em", textTransform: "uppercase", color: "#D4AF37", fontWeight: 700, marginBottom: 16 }}>Managing Director</div>
                     <div style={{ width: 40, height: 3, background: gold, borderRadius: 2, margin: isMobile ? "0 auto" : "0" }} />
                   </div>
