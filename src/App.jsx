@@ -699,7 +699,7 @@ export default function App() {
                 <h2 style={{ ...S.heading(60), marginBottom: 28 }}>OUR<br /><span className="gold-shimmer">LOCATION</span></h2>
                 <div style={{ display: "flex", gap: 13, marginBottom: 18 }}>
                   <MapPin size={20} color="#D4AF37" style={{ flexShrink: 0, marginTop: 2 }} />
-                  <p style={{ color: "rgba(255,255,255,0.58)", fontSize: 14, lineHeight: 1.75 }}>SBI ATM Above, Kulalar Mandapam , L.F. Road,<br />Cumbum – 625 516,<br />Theni District, Tamil Nadu</p>
+                  <p style={{ color: "rgba(255,255,255,0.58)", fontSize: 14, lineHeight: 1.75 }}>SBI ATM Above, Kulalar Mandapam,<br />L.F. Road, Cumbum – 625 516,<br />Theni District, Tamil Nadu</p>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
@@ -797,7 +797,7 @@ export default function App() {
                   {[
                     { icon: Phone, label: "Primary Contact", value: "96989 88383", href: "tel:9698988383" },
                     { icon: Phone, label: "Secondary Contact", value: "97095 12345", href: "tel:9709512345" },
-                    { icon: MapPin, label: "Experience Center", value: "Above SBI ATM, L.F. Road, Cumbum", href: "https://maps.app.goo.gl/p5WBtg7MyCHzQNk96" },
+                    { icon: MapPin, label: "Experience Center", value: "SBI ATM Above, Kulalar Mandapam, L.F. Road, Cumbum", href: "https://maps.app.goo.gl/p5WBtg7MyCHzQNk96" },
                     { icon: MessageCircle, label: "WhatsApp", value: "Chat with Us", href: "https://wa.me/919698988383" },
                   ].map(({ icon: Icon, label, value, href }) => (
                     <a key={label} href={href} target="_blank" rel="noreferrer" style={{
