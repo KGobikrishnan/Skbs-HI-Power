@@ -14,14 +14,14 @@ const SLIDES = [
   {
     img: "https://radhakrishnaborewells.com/wp-content/uploads/2024/10/1-14.webp",
     tag: "Cumbum's No.1 Specialist",
-    h1: "WE DRILL DEEPER", h2: "AND FASTER.",
+    h1: "Sree Kaaliamman", h2: "Borewells",
     desc: 'Commercial, Industrial, Residential and Agricultural',
     cta: "Book Free Survey",
   },
   {
     img: "https://5.imimg.com/data5/ANDROID/Default/2022/6/IP/VS/OL/94950679/product-jpeg-500x500.jpg",
     tag: "Side-Bore Technology",
-    h1: "WELL", h2: "REBORN.",
+    h1: "WE DRILL DEEPER", h2: "AND FASTER",
     desc: "Breathing new life into aging and depleted wells — our side-bore revival technology restores peak water flow with precision horizontal drilling.",
     cta: "Explore Services",
   },
@@ -699,7 +699,7 @@ export default function App() {
                 <h2 style={{ ...S.heading(60), marginBottom: 28 }}>OUR<br /><span className="gold-shimmer">LOCATION</span></h2>
                 <div style={{ display: "flex", gap: 13, marginBottom: 18 }}>
                   <MapPin size={20} color="#D4AF37" style={{ flexShrink: 0, marginTop: 2 }} />
-                  <p style={{ color: "rgba(255,255,255,0.58)", fontSize: 14, lineHeight: 1.75 }}>Above SBI ATM, L.F. Road,<br />Cumbum – 625 516,<br />Theni District, Tamil Nadu</p>
+                  <p style={{ color: "rgba(255,255,255,0.58)", fontSize: 14, lineHeight: 1.75 }}>SBI ATM Above, Kulalar Mandapam , L.F. Road,<br />Cumbum – 625 516,<br />Theni District, Tamil Nadu</p>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
