@@ -60,9 +60,9 @@ const PROCESS = [
 ];
 
 const TESTIMONIALS = [
-  { name: "Raju", loc: "Uthamapalayam", stars: 5, text: "SKBS found water at 400ft where two other companies failed. My farm is now thriving because of them!" },
+  { name: "Raju", loc: "Uthamapalayam", stars: 5, text: "Sree Kaaliamman Borewells found water at 400ft where two other companies failed. My farm is now thriving because of them!" },
   { name: "Meenakshi Industries", loc: "Cumbum", stars: 5, text: "Professional, fast, excellent water yield. Best industrial boring service in Theni district." },
-  { name: "Selvam", loc: "Kumuli", stars: 5, text: "Three borewells before this. SKBS used their survey method and hit water on the very first try at 600ft." },
+  { name: "Selvam", loc: "Kumuli", stars: 5, text: "Three borewells before this. Sree Kaaliamman Borewells used their survey method and hit water on the very first try at 600ft." },
   { name: "Annamalai", loc: "Theni", stars: 5, text: "Side-bore technology revived my 20-year-old dry open well. Water flowing again after 5 years!" },
 ];
 
@@ -484,7 +484,7 @@ export default function App() {
           <FadeUp>
             <div>
               <div style={S.tag}>Why Trust Us</div>
-              <h2 style={{ ...S.heading(70), marginBottom: 22 }}>THE SKBS<br /><span className="gold-shimmer">DIFFERENCE</span></h2>
+              <h2 style={{ ...S.heading(70), marginBottom: 22 }}>THE Sree Kaaliamman Borewells<br /><span className="gold-shimmer">DIFFERENCE</span></h2>
               {/* Tagline */}
               <div style={{ borderLeft: "3px solid #D4AF37", paddingLeft: 16, marginBottom: 24 }}>
                 <p style={{ color: "#D4AF37", fontSize: 15, fontStyle: "italic", fontWeight: 600, lineHeight: 1.5 }}>
@@ -492,7 +492,7 @@ export default function App() {
                 </p>
               </div>
               <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 15, lineHeight: 1.85, marginBottom: 32, maxWidth: 420 }}>
-                With over 24 years drilling into the heart of Theni district, we've earned the trust of farmers, industries, and homes alike. Reliability, precision, and lasting solutions — that's the SKBS promise.
+                With over 24 years drilling into the heart of Theni district, we've earned the trust of farmers, industries, and homes alike. Reliability, precision, and lasting solutions — that's the Sree kaaliamman borewells promise.
               </p>
 
               <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 40, padding: "20px 24px", background: "rgba(255,255,255,0.04)", borderRadius: 28, border: "1px solid rgba(255,255,255,0.08)", width: "fit-content" }}>
@@ -739,7 +739,7 @@ export default function App() {
                     <img src={Logo} alt="SKBS Logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                   </div>
                   <div>
-                    <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 32, letterSpacing: "0.08em", color: "#fff" }}>SKBS HI-POWER</div>
+                    <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 32, letterSpacing: "0.08em", color: "#fff" }}>Sree Kaaliamman Borewells HI-POWER</div>
                     <div style={{ fontSize: 9, letterSpacing: "0.3em", color: "#D4AF37", fontWeight: 700, textTransform: "uppercase" }}>Borewell Specialists • Est. 2002</div>
                   </div>
                 </div>
@@ -826,7 +826,7 @@ export default function App() {
           </div>
 
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 22, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
-            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", letterSpacing: "0.08em" }}>© 2025 SKBS Hi-Power Borewells. All rights reserved.</div>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", letterSpacing: "0.08em" }}>© 2025 Sree Kaaliamman Borewells Hi-Power Borewells. All rights reserved.</div>
             <div style={{
               fontSize: 11,
               fontWeight: 600,
